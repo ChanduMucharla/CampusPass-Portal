@@ -1,0 +1,47 @@
+
+{% extends 'base.html' %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="list-group shadow rounded-4">
+      <a class="list-group-item list-group-item-action" href="{% url 'manage_outpasses' %}">Pending Outpasses</a>
+      <a class="list-group-item list-group-item-action" href="{% url 'manage_outpasses' %}">Approved/Rejected History</a>
+      <a class="list-group-item list-group-item-action" href="#">Feedback</a>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="card shadow rounded-4 mb-3">
+      <div class="card-body">
+        <h4 class="mb-3">Pending Outpasses</h4>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead><tr><th>ID</th><th>Student</th><th>Date</th><th>Time</th><th>Reason</th><th>Actions</th></tr></thead>
+            <tbody>
+              {% for op in pending %}
+              <tr>
+                <td>#{{ op.id }}</td>
+                <td>{{ op.student.username }}</td>
+                <td>{{ op.date }}</td>
+                <td>{{ op.time }}</td>
+                <td>{{ op.reason|truncatechars:40 }}</td>
+                <td>
+                  <a class="btn btn-sm btn-success" href="{% url 'approve_outpass' op.id %}">Approve</a>
+                  <a class="btn btn-sm btn-danger" href="{% url 'reject_outpass' op.id %}">Reject</a>
+                </td>
+              </tr>
+              {% empty %}<tr><td colspan="6">No pending items.</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card shadow rounded-4">
+      <div class="card-body">
+        <h4 class="mb-3">Recent Activity</h4>
+        <p>Go to <a href="{% url 'manage_outpasses' %}">Manage Outpasses</a> for full list.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

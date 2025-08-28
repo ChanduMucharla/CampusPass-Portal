@@ -1,0 +1,36 @@
+
+{% extends 'base.html' %}
+{% block title %}Contact Warden/Faculty{% endblock %}
+{% block content %}
+<h3 class="mb-3">Wardens</h3>
+<div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+  {% for u in wardens %}
+  <div class="col">
+    <div class="card shadow rounded-4 h-100">
+      <div class="card-body text-center">
+        <img src="{{ u.profile_photo.url if u.profile_photo else '/static/img/user.png' }}" class="rounded-circle mb-2" width="80" height="80" alt="profile">
+        <h6 class="mb-1">{{ u.full_name }}</h6>
+        <div class="text-muted small mb-2">{{ u.role|title }}</div>
+        <a class="btn btn-sm btn-outline-dark" href="mailto:{{ u.email }}">Email</a>
+      </div>
+    </div>
+  </div>
+  {% empty %}<div class="col">No wardens available.</div>{% endfor %}
+</div>
+
+<h3 class="mb-3">Faculty</h3>
+<div class="row row-cols-1 row-cols-md-3 g-3">
+  {% for u in faculty %}
+  <div class="col">
+    <div class="card shadow rounded-4 h-100">
+      <div class="card-body text-center">
+        <img src="{{ u.profile_photo.url if u.profile_photo else '/static/img/user.png' }}" class="rounded-circle mb-2" width="80" height="80" alt="profile">
+        <h6 class="mb-1">{{ u.full_name }}</h6>
+        <div class="text-muted small mb-2">{{ u.role|title }}</div>
+        <a class="btn btn-sm btn-outline-dark" href="mailto:{{ u.email }}">Email</a>
+      </div>
+    </div>
+  </div>
+  {% empty %}<div class="col">No faculty available.</div>{% endfor %}
+</div>
+{% endblock %}

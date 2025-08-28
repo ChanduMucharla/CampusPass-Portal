@@ -1,0 +1,33 @@
+
+{% extends 'base.html' %}
+{% block title %}Feedback{% endblock %}
+{% block content %}
+<div class="mx-auto" style="max-width:640px;">
+  <div class="card shadow rounded-4">
+    <div class="card-body p-4">
+      <h3 class="mb-3">Send Feedback</h3>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">To</label>
+          <select name="recipient" class="form-select" required>
+            <option value="">Select Warden/Faculty</option>
+            {% for u in recipients %}
+            <option value="{{ u.id }}">{{ u.full_name }} ({{ u.role|title }})</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Subject</label>
+          <input type="text" name="subject" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Message</label>
+          <textarea name="message" rows="5" class="form-control" required></textarea>
+        </div>
+        <button class="btn btn-gradient w-100">Send Feedback</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

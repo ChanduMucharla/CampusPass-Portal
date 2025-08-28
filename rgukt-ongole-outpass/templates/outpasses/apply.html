@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load widget_tags %}
+{% block title %}Apply Outpass{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card shadow rounded-4">
+      <div class="card-body">
+        <h4 class="mb-3">Apply for Outpass</h4>
+        <p class="text-muted">Select a staff (warden or faculty) to review your request. You can also leave it blank to allow auto assignment.</p>
+        <form method="post" enctype="multipart/form-data" id="applyForm" novalidate>
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Approving Warden/Faculty (optional)</label>
+            {{ form.warden|add_class:"form-select" }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Reason</label>
+            {{ form.reason|add_class:"form-control" }}
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Date</label>
+              {{ form.date|add_class:"form-control" }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Time</label>
+              {{ form.time|add_class:"form-control" }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Attachment (optional)</label>
+            {{ form.attachment|add_class:"form-control" }}
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <a class="btn btn-outline-secondary" href="{% url 'my_outpasses' %}">My Outpasses</a>
+            <button class="btn btn-success" type="submit">Submit Application</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('applyForm').addEventListener('submit', function(e){
+  if(!this.checkValidity()){
+    e.preventDefault();
+    this.classList.add('was-validated');
+  }
+});
+</script>
+{% endblock %}
+

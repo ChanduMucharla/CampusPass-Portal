@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex flex-col items-center p-6 bg-white shadow-md rounded-2xl w-96 mx-auto">
+    <div class="w-32 h-32 mb-4">
+        {% if user.profile_photo %}
+        <img src="{{ user.profile_photo.url }}" alt="Profile"
+             class="w-full h-full rounded-full shadow-md border-4 border-blue-400">
+        {% else %}
+        <img src="{% static 'images/default-avatar.png' %}" alt="Profile"
+             class="w-full h-full rounded-full shadow-md border-4 border-gray-400">
+        {% endif %}
+    </div>
+    <h1 class="text-2xl font-bold text-gray-800">{{ user.full_name }}</h1>
+    <p class="text-gray-600">{{ user.email }}</p>
+    <p class="text-sm text-gray-500 mt-2">Role: {{ user.role|title }}</p>
+    <p class="text-sm text-gray-500">Year: {{ user.year_of_study }}</p>
+
+    <div class="mt-4 w-full">
+        <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg w-full hover:bg-blue-600 transition">
+            Edit Profile
+        </button>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="profile-hero text-center mb-4">
+  <img src="{{ user.profile_photo.url if user.profile_photo else '/static/img/user.png' }}" class="rounded-circle shadow-lg" width="140" height="140" alt="profile">
+  <h2 class="mt-3 mb-1">{{ user.full_name }}</h2>
+  <div class="text-muted">@{{ user.username }}</div>
+</div>
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow rounded-4 h-100">
+      <div class="card-body">
+        <h5 class="card-title">Personal Info</h5>
+        <div class="row small">
+          <div class="col-5 text-muted">Email</div><div class="col-7">{{ user.email|default:'-' }}</div>
+          <div class="col-5 text-muted">Phone</div><div class="col-7">{{ user.phone|default:'-' }}</div>
+          <div class="col-5 text-muted">ID Number</div><div class="col-7">{{ user.id_number|default:'-' }}</div>
+          <div class="col-5 text-muted">Year</div><div class="col-7">{{ user.year_of_study|default:'-' }}</div>
+          <div class="col-5 text-muted">Role</div><div class="col-7"><span class="badge bg-primary">{{ user.role|upper }}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow rounded-4 h-100">
+      <div class="card-body">
+        <h5 class="card-title">Quick Actions</h5>
+        <a href="{% url 'apply_outpass' %}" class="btn btn-gradient me-2 mb-2">Apply Outpass</a>
+        <a href="{% url 'my_outpasses' %}" class="btn btn-outline-dark mb-2">My Outpasses</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

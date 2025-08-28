@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}View Profile{% endblock %}
+{% block content %}
+<div class="card shadow rounded-4">
+  <div class="card-body d-flex align-items-start gap-4">
+    <img src="{{ profile_user.profile_photo.url if profile_user.profile_photo else '/static/img/profile_placeholder.png' }}" class="rounded-circle" width="110" height="110" alt="profile">
+    <div class="flex-grow-1">
+      <h4 class="mb-1">{{ profile_user.full_name }} <small class="text-muted">({{ profile_user.username }})</small></h4>
+      <p class="mb-1"><strong>Role:</strong> {{ profile_user.role|capfirst }}</p>
+      <p class="mb-1"><strong>Email:</strong> {{ profile_user.email }}</p>
+      <p class="mb-1"><strong>Phone:</strong> {{ profile_user.phone }}</p>
+      <p class="mb-1"><strong>ID:</strong> {{ profile_user.id_number }}</p>
+      <p class="mb-1"><strong>Year:</strong> {{ profile_user.year_of_study }}</p>
+    </div>
+    <div class="text-end">
+      <a class="btn btn-outline-primary" href="mailto:{{ profile_user.email }}">Email</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

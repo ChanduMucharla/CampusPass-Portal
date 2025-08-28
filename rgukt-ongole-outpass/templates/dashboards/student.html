@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="list-group shadow rounded-4">
+      <a class="list-group-item list-group-item-action" href="{% url 'apply_outpass' %}">Apply for Outpass</a>
+      <a class="list-group-item list-group-item-action" href="{% url 'my_outpasses' %}">View Previous Outpasses</a>
+      <a class="list-group-item list-group-item-action" href="{% url 'contacts' %}">Contact Warden/Faculty</a>
+      <a class="list-group-item list-group-item-action" href="{% url 'feedback' %}">Feedback</a>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="card shadow rounded-4">
+      <div class="card-body">
+        <h4 class="mb-3">Recent Outpasses</h4>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead><tr><th>ID</th><th>Date</th><th>Time</th><th>Status</th><th>QR</th></tr></thead>
+            <tbody>
+              {% for op in recent %}
+              <tr>
+                <td>#{{ op.id }}</td>
+                <td>{{ op.date }}</td>
+                <td>{{ op.time }}</td>
+                <td><span class="badge bg-secondary text-uppercase">{{ op.status }}</span></td>
+                <td>
+                  {% if op.status == 'approved' %}
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'outpass_qr' op.id %}">View QR</a>
+                  {% else %}-{% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="5">No recent outpasses.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

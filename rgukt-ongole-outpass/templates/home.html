@@ -1,0 +1,13 @@
+
+{% extends 'base.html' %}
+{% block title %}Welcome | RGUKT-ONGOLE{% endblock %}
+{% block content %}
+<div class="p-5 text-center text-white hero" style="background-image:url('/static/img/campus.png'); background-size:cover; background-position:center; border-radius:1rem;">
+  <div class="bg-dark bg-opacity-50 p-5 rounded-4">
+    <h1 class="display-5 fw-bold">Welcome to RGUKT-ONGOLE</h1>
+    <p class="lead mb-4">Outpass Management System</p>
+    <a href="{% url 'login' %}" class="btn btn-lg btn-light me-3">Login</a>
+    <a href="{% url 'register' %}" class="btn btn-lg btn-warning">Register</a>
+  </div>
+</div>
+{% endblock %}

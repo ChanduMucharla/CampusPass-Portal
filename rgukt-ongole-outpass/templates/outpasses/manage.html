@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Manage Outpasses{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between mb-3">
+      <h4>Pending Outpasses</h4>
+      <input id="searchBox" class="form-control w-25" placeholder="Search student..." />
+    </div>
+    <div class="card shadow rounded-4 mb-3">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped" id="pendingTable">
+            <thead><tr><th>ID</th><th>Student</th><th>Date</th><th>Time</th><th>Reason</th><th>Attachment</th><th>Actions</th></tr></thead>
+            <tbody>
+              {% for op in pending %}
+              <tr data-student="{{ op.student.username }}">
+                <td>#{{ op.id }}</td>
+                <td><a href="{% url 'profile_view' op.student.username %}">{{ op.student.username }}</a></td>
+                <td>{{ op.date }}</td>
+                <td>{{ op.time }}</td>
+                <td>{{ op.reason|truncatechars:80 }}</td>
+                <td>{% if op.attachment %}<a href="{{ op.attachment.url }}">Download</a>{% else %}-{% endif %}</td>
+                <td>
+                  <button class="btn btn-sm btn-success btn-approve" data-id="{{ op.id }}">Approve</button>
+                  <button class="btn btn-sm btn-danger btn-reject" data-id="{{ op.id }}">Reject</button>
+                </td>
+              </tr>
+              {% empty %}<tr><td colspan="7">No pending.</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow rounded-4">
+      <div class="card-body">
+        <h4>History</h4>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead><tr><th>ID</th><th>Student</th><th>Status</th><th>Updated</th></tr></thead>
+            <tbody>
+              {% for op in history %}
+              <tr>
+                <td>#{{ op.id }}</td>
+                <td><a href="{% url 'profile_view' op.student.username %}">{{ op.student.username }}</a></td>
+                <td><span class="badge bg-secondary text-uppercase">{{ op.status }}</span></td>
+                <td>{{ op.updated_at }}</td>
+              </tr>
+              {% empty %}<tr><td colspan="4">No history.</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// AJAX approve/reject
+document.querySelectorAll('.btn-approve').forEach(btn=>{
+  btn.addEventListener('click', function(){
+    const id = this.dataset.id;
+    if(!confirm('Approve outpass #' + id + '?')) return;
+    fetch('/outpasses/approve/' + id + '/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken'),'X-Requested-With':'XMLHttpRequest'}})
+    .then(r=>r.json()).then(data=>{ if(data.ok){ location.reload(); } else alert('Error'); });
+  });
+});
+document.querySelectorAll('.btn-reject').forEach(btn=>{
+  btn.addEventListener('click', function(){
+    const id = this.dataset.id;
+    if(!confirm('Reject outpass #' + id + '?')) return;
+    fetch('/outpasses/reject/' + id + '/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken'),'X-Requested-With':'XMLHttpRequest'}})
+    .then(r=>r.json()).then(data=>{ if(data.ok){ location.reload(); } else alert('Error'); });
+  });
+});
+
+// simple search
+document.getElementById('searchBox').addEventListener('input', function(){
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('#pendingTable tbody tr').forEach(tr=>{
+    const name = (tr.dataset.student||'').toLowerCase();
+    tr.style.display = name.includes(q) ? '' : 'none';
+  });
+});
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+</script>
+{% endblock %}
+
